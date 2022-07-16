@@ -1,0 +1,25 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      # https://github.com/marketplace/actions/push-to-ghcr
+      
+      - uses: mr-smithers-excellent/docker-build-push@v5
+        name: Build and publish a Docker image for ${{ github.repository }}
+        with:
+          image: backend-notetaking
+          tags: latest
+          registry: ghcr.io
+          dockerfile: Dockerfile
+          username: ${{ github.repository_owner }}
+          password: ${{ github.token }}
